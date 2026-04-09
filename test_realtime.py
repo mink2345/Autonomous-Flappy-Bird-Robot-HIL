@@ -13,9 +13,9 @@ pyautogui.FAILSAFE = True
 
 MONITOR = {'top': 161, 'left': 126, 'width': 717, 'height': 789}
 
-# 1. PHYSICS & SAFETY (NIEUW)
-SPRONG_KRACHT = 93  # Een sprong is ~93 pixels omhoog
-VEILIGHEIDS_BUFFER = 15  # Blijf minimaal zoveel pixels van het plafond vandaan
+# 1. PHYSICS & SAFETY
+SPRONG_KRACHT = 93
+VEILIGHEIDS_BUFFER = 15
 
 # 2. VOGEL DETECTIE
 VOGEL_MIN_GROOTTE = 50
@@ -28,7 +28,7 @@ BUIS_MIN_AREA = 200
 BUIS_MIN_BREEDTE = 15
 BUIS_KERN_DIKTE = 2
 
-# 4. KLEUREN (JOUW ORIGINELE WAARDES)
+# 4. KLEUREN
 KLEUR_VOGEL_LAAG = np.array([14, 50, 50])
 KLEUR_VOGEL_HOOG = np.array([34, 255, 255])
 KLEUR_BUIS_LAAG = np.array([40, 50, 50])
@@ -47,11 +47,9 @@ MIN_TIJD_TUSSEN_SPRONGEN = 0.10
 
 # ==============================================================================
 
-print("--- DE VLIEGENDE ROBOT (SAFETY CHECK AAN) ---")
-print("Kleuren: Origineel (Geel/Groen)")
+print("--- DE VLIEGENDE ROBOT (SCRIPT 5 - SCORE-BORD FIX) ---")
+print("1. Kijkt naar de echte boven- en onderkant (negeert doormidden gehakte buizen).")
 print("Start: DIRECT")
-
-# GEEN SLEEP MEER
 
 laatste_sprong_tijd = 0
 
@@ -84,7 +82,7 @@ with mss.mss() as sct:
 
         # 4. Vogel Opsporen
         vogel_x, vogel_y = 0, 0
-        vogel_top = 0  # NODIG VOOR SAFETY CHECK
+        vogel_top = 0
 
         contours_vogel, _ = cv2.findContours(mask_vogel, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
         if contours_vogel:
@@ -93,7 +91,7 @@ with mss.mss() as sct:
                 x, y, w, h = cv2.boundingRect(c)
                 vogel_x = x + w // 2 + VOGEL_OFFSET_X
                 vogel_y = y + h // 2
-                vogel_top = y  # Bovenkant schedel
+                vogel_top = y
                 cv2.circle(img, (vogel_x, vogel_y), 10, (255, 0, 0), 2)
 
         # 5. Buizen Detectie
@@ -132,31 +130,37 @@ with mss.mss() as sct:
 
         for kolom in kolommen:
             buizen_in_kolom = kolom['buizen']
-            buizen_in_kolom.sort(key=lambda b: b['y'])
+
+            # --- DE NIEUWE LOGICA VOOR HET SCORE-BORD PROBLEEM ---
+            # Sorteer de stukken in 'bovenin' en 'onderin'
+            boven_stukken = [b for b in buizen_in_kolom if b['y'] < midden_scherm]
+            onder_stukken = [b for b in buizen_in_kolom if b['y'] >= midden_scherm]
 
             y_plafond = 0
             y_vloer = scherm_hoogte
-
-            # Bepaal waar het plafond zit (voor de safety check)
             plafond_gevaar = 0
 
-            if len(buizen_in_kolom) >= 2:
-                y_plafond = buizen_in_kolom[0]['bottom']
-                y_vloer = buizen_in_kolom[-1]['y']
+            # Bepaal het échte plafond
+            if boven_stukken:
+                y_plafond = max(b['bottom'] for b in boven_stukken)
                 plafond_gevaar = y_plafond
-            elif len(buizen_in_kolom) == 1:
-                buis = buizen_in_kolom[0]
-                if buis['y'] < midden_scherm:
-                    y_plafond = buis['bottom']
-                    y_vloer = y_plafond + GAP_SIZE + CORRECTIE_BOVEN_BUIS
-                    plafond_gevaar = y_plafond
-                else:
-                    y_vloer = buis['y']
-                    y_plafond = y_vloer - GAP_SIZE + CORRECTIE_ONDER_BUIS
-                    # Bij stompje is er geen fysiek plafond, dus gevaar = 0 (of heel hoog)
-                    plafond_gevaar = 0
 
-                    # Doel berekenen
+            # Bepaal de échte vloer
+            if onder_stukken:
+                y_vloer = min(b['y'] for b in onder_stukken)
+
+            # --- GAP WISKUNDE ---
+            if boven_stukken and onder_stukken:
+                pass  # Alles is goed, we hebben vloer en plafond
+            elif boven_stukken and not onder_stukken:
+                # Alleen boven (met of zonder score getal, maakt niet uit)
+                y_vloer = y_plafond + GAP_SIZE + CORRECTIE_BOVEN_BUIS
+            elif onder_stukken and not boven_stukken:
+                # Alleen onder
+                y_plafond = y_vloer - GAP_SIZE + CORRECTIE_ONDER_BUIS
+                plafond_gevaar = 0
+
+            # Doel berekenen
             gat_midden = (y_plafond + y_vloer) // 2 + EXTRA_ZAKKEN
 
             # Visualiseer
@@ -181,19 +185,15 @@ with mss.mss() as sct:
                 # 1. Willen we springen?
                 if verschil > MARGE_SPRONG:
 
-                    # 2. SAFETY CHECK: Is het veilig?
-                    # Waar is mijn hoofd NA 93px springen?
+                    # 2. SAFETY CHECK
                     hoofd_na_sprong = vogel_top - SPRONG_KRACHT
-
-                    # Is dat hoger dan het plafond + buffer?
-                    # (Let op: Y=0 is boven, dus kleiner getal is hoger)
                     is_veilig = True
                     if plafond_gevaar > 0:
                         if hoofd_na_sprong < (plafond_gevaar + VEILIGHEIDS_BUFFER):
                             is_veilig = False
 
                     if is_veilig:
-                        # --- SPRINGEN ---
+                        # SPRINGEN
                         nu = time.time()
                         if nu - laatste_sprong_tijd > MIN_TIJD_TUSSEN_SPRONGEN:
                             pyautogui.keyDown('space')
@@ -206,17 +206,16 @@ with mss.mss() as sct:
                             cv2.putText(img, "Wait", (vogel_x, vogel_y - 20), cv2.FONT_HERSHEY_SIMPLEX, 0.5,
                                         (0, 165, 255), 2)
                     else:
-                        # --- GEBLOKKEERD ---
+                        # GEBLOKKEERD
                         cv2.putText(img, "BLOCKED!", (vogel_x, vogel_y - 20), cv2.FONT_HERSHEY_SIMPLEX, 0.8,
                                     (0, 0, 255), 2)
-                        # Kruis door vogel
                         cv2.line(img, (vogel_x - 10, vogel_y - 10), (vogel_x + 10, vogel_y + 10), (0, 0, 255), 2)
                         cv2.line(img, (vogel_x + 10, vogel_y - 10), (vogel_x - 10, vogel_y + 10), (0, 0, 255), 2)
 
                 else:
                     cv2.putText(img, "Zakken", (vogel_x, vogel_y - 20), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)
 
-        cv2.imshow('Robot Brein (Safety)', img)
+        cv2.imshow('Robot Brein (Final Fix)', img)
         if cv2.waitKey(1) & 0xFF == ord('q'):
             break
 
