@@ -11,8 +11,7 @@ pyautogui.FAILSAFE = True
 # --- INSTELLINGEN ---
 # ==============================================================================
 
-MONITOR = {'top': 161, 'left': 126, 'width': 717, 'height': 789}
-
+MONITOR = {'top': 152, 'left': 118, 'width': 518, 'height': 696}
 # 1. PHYSICS & SAFETY
 SPRONG_KRACHT = 93
 VEILIGHEIDS_BUFFER = 15
