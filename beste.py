@@ -10,12 +10,12 @@ pyautogui.FAILSAFE = True
 
 MONITOR = {'top': 152, 'left': 118, 'width': 518, 'height': 696}
 # 1. PHYSICS & SAFETY
-SPRONG_KRACHT = 93
-VEILIGHEIDS_BUFFER = 15
+SPRONG_KRACHT = 95
+VEILIGHEIDS_BUFFER = 17
 
 # 2. VOGEL DETECTIE
 VOGEL_MIN_GROOTTE = 50
-VOGEL_OFFSET_X = 15
+VOGEL_OFFSET_X = 50
 OVAAL_BREEDTE_EXTRA = 0
 OVAAL_HOOGTE_EXTRA = 0
 
@@ -32,12 +32,12 @@ KLEUR_BUIS_HOOG = np.array([60, 255, 255])
 
 # 5. NAVIGATIE
 GAP_SIZE = 140
-EXTRA_ZAKKEN = 20  # Ietsjes omhoog gezet (was 30) om crash tegen onderbuis te voorkomen
+EXTRA_ZAKKEN = 14
 
 # 6. ACTIE
-MARGE_SPRONG = 5
+MARGE_SPRONG = 0
 KLIK_TIJD = 0.02
-MIN_TIJD_TUSSEN_SPRONGEN = 0.10
+MIN_TIJD_TUSSEN_SPRONGEN = 0.05
 
 # ==============================================================================
 
@@ -176,7 +176,7 @@ with mss.mss() as sct:
                          (0, 0, 255), 2)
 
             # --- ACTIE LOGICA ---
-            if not doel_gevonden and vogel_x > 0 and (kolom['start_x'] + kolom['max_w'] > vogel_x):
+            if not doel_gevonden and vogel_x > 0 and (kolom['start_x'] + kolom['max_w'] + 40 > vogel_x):
                 doel_gevonden = True
                 cv2.line(img, (vogel_x, vogel_y), (kolom['gemiddelde_x'], gat_midden), (200, 200, 0), 1)
 
