@@ -4,12 +4,9 @@ import mss
 import pyautogui
 import time
 
-# --- VEILIGHEID ---
 pyautogui.FAILSAFE = True
 
-# ==============================================================================
 # --- INSTELLINGEN ---
-# ==============================================================================
 
 MONITOR = {'top': 152, 'left': 118, 'width': 518, 'height': 696}
 # 1. PHYSICS & SAFETY
