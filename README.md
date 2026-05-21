@@ -1,6 +1,6 @@
 # Flappy Bird  Robot - Project Documentatie & Master Cheatsheet
 
-Dit document bevat de volledige projectomschrijving, de behaalde mijlpalen, het definitieve en veilige schakelschema, en de benodigde scripts voor de Raspberry Pi 4B Flappy Bird-robot. Sla dit bestand op als `README.md` in de hoofdmap van je repository.
+Dit document bevat de volledige projectomschrijving, de behaalde mijlpalen, het definitieve en veilige schakelschema, en de benodigde scripts voor de Raspberry Pi 4B Flappy Bird-robot. 
 
 ---
 
