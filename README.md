@@ -32,6 +32,9 @@ De ontwikkeling volgt een iteratieve aanpak, startend bij softwarematige validat
 * **Fase 4: Mechanische Constructie (Huidige fase)**
   Het realiseren van de fysieke testopstelling. Het doel is een starre constructie te bouwen om mechanische speling en beeldvervorming door trillingen of externe lichtbronnen te elimineren.
 
+* **Fase 5: Systeemintegratie & Tweaking (Aankomende fase)**
+  Het samenvoegen van de *Vision* en *Actuatie* subsystemen in één hoofdscript (`main.py`). De virtuele input wordt vervangen: wanneer het OpenCV-algoritme groen (een buis) detecteert, triggert dit direct de solenoid via de GPIO. Deze fase omvat intensief testen en het 'tweaken' van de timing om de hardware-lag (delay) te compenseren en een continue, stabiele *gameplay loop* te bereiken.
+
 ---
 
 ## 1. Hardware Specificaties
@@ -105,3 +108,26 @@ if cap.isOpened():
         cv2.imwrite('vision_reference_frame.jpg', frame)
         print("[INFO] Referentieframe opgeslagen voor threshold kalibratie.")
 cap.release()
+
+### Test B: Actuatie & Schakelcircuit (`motor_test.py`)
+Validatie van de transistor-schakeling en het meten van de mechanische respons van de solenoid. Dit script verifieert of het circuit correct en veilig schakelt.
+
+```python
+from gpiozero import LED
+from time import sleep
+
+# Configuratie van de besturingspin (GPIO 18)
+solenoid = LED(18)
+
+try:
+    while True:
+        print("[ACTION] Actuatie (HIGH)")
+        solenoid.on()
+        sleep(0.1)      # 100ms contacttijd (fingertip touch simulatie)
+        
+        print("[ACTION] Rust (LOW)")
+        solenoid.off()
+        sleep(2.0)      # Wacht 2 seconden
+except KeyboardInterrupt:
+    solenoid.off()
+    print("\n[INFO] Actuatietest veilig afgebroken door gebruiker.")
