@@ -21,7 +21,7 @@ De ontwikkeling volgt een iteratieve aanpak, startend bij softwarematige validat
 
 * **Fase 1: Proof of Concept - Softwarematige validatie (Voltooid)**
   De initiële ontwikkeling vond plaats op een laptop om de beeldverwerkingslogica te valideren. Hierbij is bewust gekozen voor pure Computer Vision (CV) in plaats van Machine Learning (ML). Door middel van gerichte optimalisatie van kleurherkenning en contourdetectie in OpenCV, konden de objecten betrouwbaar worden geïsoleerd in statische beelden (`[JOUW_BESTANDSNAAM_STATISCH].py`). 
-  Vervolgens is de codebase uitgebreid naar een real-time implementatie via schermopname (`[JOUW_BESTANDSNAAM_LIVE].py`). Het algoritme stuurde autonoom de spatiebalk van de laptop aan en registreerde de prestatiedata in een logbestand (`[JOUW_BESTANDSNAAM_DATA].csv`) voor verdere analyse. Deze geoptimaliseerde CV-aanpak bleek uiterst effectief en resulteerde in een topscore van 90.
+  Vervolgens is de codebase uitgebreid naar een real-time implementatie via schermopname (`[JOUW_BESTANDSNAAM_LIVE].py`). Het algoritme stuurde autonoom de spatiebalk van de laptop aan en registreerde de prestatiedata in een logbestand (`[JOUW_BESTANDSNAAM_DATA].csv`) voor verdere analyse. Deze geoptimaliseerde CV-aanpak bleek uiterst effectief en resulteerde in een topscore van 90.(' [beste script]' )
 
 * **Fase 2: Hardware Setup - Vision (Voltooid)**
   De migratie van de vision-architectuur naar de Raspberry Pi. Dit omvatte de integratie van de fysieke Camera Module 3, configuratie van de autofocus-parameters en het valideren van de framerate en latency via een lokaal netwerk.
