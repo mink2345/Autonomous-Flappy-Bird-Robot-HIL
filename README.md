@@ -21,7 +21,7 @@ Dit document bevat de volledige configuratie, het definitieve en veilige schakel
 Hieronder staat het geteste circuit waarin de Raspberry Pi volledig elektrisch geïsoleerd is van de zware stroom van de solenoid.
 
 ### 🖼️ Foto van het Circuit
-![Definitief Schakelschema Breadboard](circuit_schema.png)
+![Definitief Schakelschema Breadboard](curcuit.png)
 
 ### 📌 Bedrading Checklist (De Gouden Regels)
 * **Raspberry Pi verbindingen:**
@@ -46,7 +46,7 @@ Hieronder staat het geteste circuit waarin de Raspberry Pi volledig elektrisch g
 Dit gedeelte is gereserveerd voor de mechanische opbouw. De camera moet recht boven de iPad hangen (vrij van reflecties), en de solenoid moet met een stylus-pen stabiel boven het scherm zweven.
 
 ### 📐 Tekening / Foto van de Totale Constructie
-![Totale Robot Opstelling boven iPad](totale_setup.png)
+![Totale Robot Opstelling boven iPad](setup.jpeg)
 
 * **Camera-hoogte:** Zorg dat het volledige speelveld van de iPad in beeld is zonder dat omgevingslicht reflecteert op het glas.
 * **Solenoid-afstand:** Monteer de solenoid zo dat de stylus in ruststand **1 millimeter** boven het scherm zweeft. Hoe korter de afstand, hoe sneller de tik (minder mechanische lag).
