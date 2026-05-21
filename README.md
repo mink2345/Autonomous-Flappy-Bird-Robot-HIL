@@ -108,6 +108,7 @@ if cap.isOpened():
         cv2.imwrite('vision_reference_frame.jpg', frame)
         print("[INFO] Referentieframe opgeslagen voor threshold kalibratie.")
 cap.release()
+```
 
 ### Test B: Actuatie & Schakelcircuit (`motor_test.py`)
 Validatie van de transistor-schakeling en het meten van de mechanische respons van de solenoid. Dit script verifieert of het circuit correct en veilig schakelt.
@@ -131,3 +132,4 @@ try:
 except KeyboardInterrupt:
     solenoid.off()
     print("\n[INFO] Actuatietest veilig afgebroken door gebruiker.")
+```
