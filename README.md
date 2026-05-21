@@ -90,25 +90,34 @@ De betrouwbaarheid van het algoritme is direct afhankelijk van de stabiliteit va
 
 De onderstaande scripts documenteren de geïsoleerde unittests van de hardware-componenten.
 
-### Test A: Computer Vision Pipeline (`[JOUW_BESTANDSNAAM_CAMERA_TEST].py`)
-Validatie van de cameraparameters en de interface met OpenCV op de Raspberry Pi. Dit stelt de autofocus in en capteert een referentieframe voor kleuranalyse.
+### Test A: Vision Hardware Validatie & Latency Analyse (CLI)
+De initiële validatie van de Camera Module 3 is direct via de Linux Command Line Interface (CLI) uitgevoerd. Deze low-level aanpak sluit software-overhead uit en bevestigt dat de sensor op kernel-niveau correct communiceert. 
 
-```python
-import cv2
-import time
+Tijdens deze fase zijn zowel de statische uitlijning als een real-time videostream getest om de bandbreedte en systeemlatentie (lag) in kaart te brengen.
 
-cap = cv2.VideoCapture(0)
+```bash
+# 1. Statische validatie: Capteer een testfoto voor OpenCV kleur-kalibratie
+rpicam-jpeg -o vision_reference_frame.jpg
 
-if cap.isOpened():
-    print("[INFO] Camera stream actief. Autofocus kalibratie...")
-    time.sleep(2) # Stabilisatie van de lens
-    
-    ret, frame = cap.read()
-    if ret:
-        cv2.imwrite('vision_reference_frame.jpg', frame)
-        print("[INFO] Referentieframe opgeslagen voor threshold kalibratie.")
-cap.release()
+# Start een lokaal netwerk-endpoint om bestanden head-less (zonder monitor) uit te lezen
+python3 -m http.server 8000
+
+# 2. Dynamische validatie: Start een real-time TCP videostream voor latency-meting
+rpicam-vid -t 0 --inline --listen -o tcp://0.0.0.0:8080
 ```
+
+#### Handleiding: Live TCP-stream bekijken via VLC Media Player
+Om de dynamische videostream van de Raspberry Pi live te inspecteren op een laptop (binnen hetzelfde netwerk), dienen de volgende stappen exact te worden uitgevoerd:
+
+1. **Start de stream op de Raspberry Pi:** Zorg dat het bovenstaande `rpicam-vid` commando actief is in de terminal van de Raspberry Pi. De Pi luistert nu op poort `8080` naar inkomende verbindingen.
+2. **Open VLC Media Player:** Start de VLC-applicatie op de laptop (beschikbaar voor macOS, Windows en Linux).
+3. **Navigeer naar Netwerkstroom:**
+   * *Voor macOS:* Ga in de bovenbalk naar **Bestand** (File) -> **Netwerk openen...** (Open Network...).
+   * *Voor Windows:* Ga in de menu-balk naar **Media** -> **Netwerkstroom openen...** (Open Network Stream...) of gebruik de sneltoets `Ctrl + N`.
+4. **Voer de Netwerk-URL in:** Voer in het invoerveld het protocol, het IP-adres (of de hostname) van de Raspberry Pi en het poortnummer in volgens onderstaande syntaxis:
+   ```text
+   tcp://[IP_ADRES_RASPBERRY_PI]:8080
+   ```
 
 ### Test B: Actuatie & Schakelcircuit (`motor_test.py`)
 Validatie van de transistor-schakeling en het meten van de mechanische respons van de solenoid. Dit script verifieert of het circuit correct en veilig schakelt.
