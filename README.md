@@ -142,3 +142,80 @@ except KeyboardInterrupt:
     solenoid.off()
     print("\n[INFO] Actuatietest veilig afgebroken door gebruiker.")
 ```
+
+## 3. Test C: OpenCV Kleurdetectie met Camera Module
+
+In deze test koppelen we de officiële Raspberry Pi Camera Module (via de platte lintkabel) aan het circuit. Het doel is om de kleur rood te detecteren binnen het HSV-kleurbereik en bij succes direct de solenoid op GPIO 18 (fysieke Pin 12) aan te sturen via de TIP120-transistor.
+
+### Opmerkingen & Bevindingen
+* **Software-koppeling:** Vanwege de architectuur van het nieuwe Raspberry Pi OS (Bookworm) werkt de standaard `cv2.VideoCapture(0)` methode niet met de camera module. Er is succesvol overgestapt op de officiële `Picamera2` library om frames razendsnel en rechtstreeks in een numpy-array in te laden voor OpenCV.
+* **Kleurherkenning:** De basis van de kleurherkenning werkt en activeert de transistor. De detectie is momenteel nog afhankelijk van omgevingslicht en schermreflecties (zoals bij het filmen van een iPad-scherm). Dit vereist in de volgende fase het verder finetunen van de HSV-drempelwaarden voor een strakkere triggering.
+* **Mechanische slag:** De solenoid reageert correct op het stuursignaal. Omdat de start van de slag op een 5V voeding iets aan kracht mist, blijft een mechanische 'stroke limiter' (zoals een propje of tape achter de pen) voorlopig nodig om hem soepel en zelfstandig te laten inklappen.
+
+### Geteste Code (`test_c_camera.py`)
+
+```python
+import cv2
+import numpy as np
+from gpiozero import LED
+import time
+from picamera2 import Picamera2
+
+# 1. Hardware Setup (gpiozero - BCM Pin 18 / Fysieke Pin 12)
+solenoid = LED(18)
+solenoid.off() 
+
+# 2. Raspberry Pi Camera Module opstarten
+print("Camera Module initialiseren...")
+picam2 = Picamera2()
+
+# Resolutie op 640x480 gezet voor een maximale framerate en snelle reactietijd
+config = picam2.create_preview_configuration(main={"size": (640, 480)})
+picam2.configure(config)
+picam2.start()
+
+time.sleep(2.0)
+print("Test C Gestart: Camera is actief. Wachten op de kleur ROOD...")
+print("Druk in de terminal op 'Ctrl+C' om te stoppen.")
+
+try:
+    while True:
+        # Pak direct een frame van de Camera Module
+        frame = picam2.capture_array()
+
+        # Zet het beeld om van BGR naar HSV kleurbereik
+        hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
+
+        # Definieer de twee bereiken voor de kleur ROOD in HSV
+        lager_rood1 = np.array([0, 120, 70])
+        hoger_rood1 = np.array([10, 255, 255])
+        lager_rood2 = np.array([170, 120, 70])
+        hoger_rood2 = np.array([180, 255, 255])
+
+        # Maak maskers en voeg ze samen
+        mask1 = cv2.inRange(hsv, lager_rood1, hoger_rood1)
+        mask2 = cv2.inRange(hsv, lager_rood2, hoger_rood2)
+        volledig_masker = mask1 + mask2
+
+        # Tel het aantal gedetecteerde rode pixels
+        rode_pixels = np.sum(volledig_masker == 255)
+
+        # Als de drempelwaarde van 4000 pixels wordt overschreden, activeer de solenoid
+        if rode_pixels > 4000:
+            print(f"ROOD GEZIEN! ({rode_pixels} pixels) -> SOLENOID PUSH!")
+            solenoid.on()        # Transistor open, solenoid slaat uit
+            time.sleep(0.15)     # Pulsduur van 150 milliseconden
+            solenoid.off()       # Transistor dicht, solenoid trekt terug
+            
+            # Wachttijd om herhaaldelijk mitrailleren op hetzelfde object te voorkomen
+            time.sleep(0.6) 
+
+except KeyboardInterrupt:
+    print("\nTest C handmatig gestopt.")
+
+finally:
+    # Hardware en camera streams netjes deactiveren en vrijgeven
+    picam2.stop()
+    solenoid.off()
+    print("Camera afgesloten. Hardware staat in veilige ruststand.")
+```
