@@ -143,16 +143,16 @@ except KeyboardInterrupt:
     print("\n[INFO] Actuatietest veilig afgebroken door gebruiker.")
 ```
 
-## 3. Test C: OpenCV Kleurdetectie met Camera Module
+### Test C: OpenCV Kleurdetectie met Camera Module
 
 In deze test koppelen we de officiële Raspberry Pi Camera Module (via de platte lintkabel) aan het circuit. Het doel is om de kleur rood te detecteren binnen het HSV-kleurbereik en bij succes direct de solenoid op GPIO 18 (fysieke Pin 12) aan te sturen via de TIP120-transistor.
 
-### Opmerkingen & Bevindingen
+#### Opmerkingen & Bevindingen
 * **Software-koppeling:** Vanwege de architectuur van het nieuwe Raspberry Pi OS (Bookworm) werkt de standaard `cv2.VideoCapture(0)` methode niet met de camera module. Er is succesvol overgestapt op de officiële `Picamera2` library om frames razendsnel en rechtstreeks in een numpy-array in te laden voor OpenCV.
 * **Kleurherkenning:** De basis van de kleurherkenning werkt en activeert de transistor. De detectie is momenteel nog afhankelijk van omgevingslicht en schermreflecties (zoals bij het filmen van een iPad-scherm). Dit vereist in de volgende fase het verder finetunen van de HSV-drempelwaarden voor een strakkere triggering.
 * **Mechanische slag:** De solenoid reageert correct op het stuursignaal. Omdat de start van de slag op een 5V voeding iets aan kracht mist, blijft een mechanische 'stroke limiter' (zoals een propje of tape achter de pen) voorlopig nodig om hem soepel en zelfstandig te laten inklappen.
 
-### Geteste Code (`test_c_camera.py`)
+#### Geteste Code (`test_c_camera.py`)
 
 ```python
 import cv2
