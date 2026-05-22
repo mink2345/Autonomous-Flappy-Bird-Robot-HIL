@@ -43,8 +43,8 @@ De ontwikkeling volgt een iteratieve aanpak, startend bij softwarematige validat
 * **Vision Sensor:** Raspberry Pi Camera Module 3 (Phase Detection Autofocus via CSI-interface)
 * **Actuator:** Solenoid Push-Pull 6V 300mA (JF-0530B)
 * **Voeding (Actuator):** Gestripte 2-aderige USB-kabel (via 5V USB-adapter) of een stabiele DC-voedingsbron (bijv. 6V batterij-array).
-* **Elektronische Componenten:** * 1x NPN Transistor (bijv. PN2222 of BC547)
-  * 1x 1kΩ Basisweerstand (Kleurcode: Bruin-Zwart-Rood)
+* **Elektronische Componenten:** * 1x TIP120 Darlington Transistor
+  * 2x 1kΩ Basisweerstand (Kleurcode: Bruin-Zwart-Rood)
   * 1x Vrijloopdiode (bijv. 1N4007)
   * 1x Breadboard & bekabeling
 
@@ -55,7 +55,7 @@ De ontwikkeling volgt een iteratieve aanpak, startend bij softwarematige validat
 De GPIO-pinnen van de Raspberry Pi zijn niet ontworpen voor het leveren van hoge stromen. Het onderstaande circuit maakt gebruik van een externe voeding waarbij een NPN-transistor fungeert als low-side switch.
 
 ### Definitief Circuit
-![Definitief Schakelschema Breadboard](curcuit.png)
+![Definitief Schakelschema Breadboard](Circuit.png)
 
 ### Bedradingsspecificaties
 * **Microcontroller Interface:**
@@ -64,10 +64,10 @@ De GPIO-pinnen van de Raspberry Pi zijn niet ontworpen voor het leveren van hoge
 * **Externe Voeding (Power Rail):**
   * **VCC (+)** -> Positieve stroomlijn van het breadboard.
   * **GND (-)** -> Gedeelde massa van het breadboard.
-* **Transistor (NPN):**
-  * **Collector:** Verbonden met klem B van de solenoid.
-  * **Base:** Verbonden met het stuursignaal (via de weerstand).
-  * **Emitter:** Verbonden met de gedeelde massa.
+* **TIP120 Transistor (NPN - Platte kant met tekst naar voren):**
+  * **Base (Linker pootje):** Verbonden met het stuursignaal vanaf de Pi **én** via een **1kΩ pull-down weerstand** direct verbonden met de GND (-).
+  * **Collector (Middelste pootje):** Verbonden met de zwarte draad van de solenoid en de anode (zwarte kant) van de diode.
+  * **Emitter (Rechter pootje):** Direct verbonden met de gedeelde GND (-).
 * **Inductieve Last & Beveiliging:**
   * **Solenoid Klem A:** Verbonden met de VCC (+).
   * **Vrijloopdiode:** Parallel over de solenoid geplaatst. De kathode (gemarkeerd met streep) is gericht naar de VCC (+) om de flyback-stroom veilig te dissiperen.
