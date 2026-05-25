@@ -6,49 +6,37 @@ import time
 
 pyautogui.FAILSAFE = True
 
-# --- INSTELLINGEN ---
 
 MONITOR = {'top': 152, 'left': 118, 'width': 518, 'height': 696}
 # 1. PHYSICS & SAFETY
 SPRONG_KRACHT = 95
 VEILIGHEIDS_BUFFER = 17
-
 # 2. VOGEL DETECTIE
 VOGEL_MIN_GROOTTE = 50
 VOGEL_OFFSET_X = 50
 OVAAL_BREEDTE_EXTRA = 0
 OVAAL_HOOGTE_EXTRA = 0
-
 # 3. BUIS DETECTIE
 BUIS_MIN_AREA = 200
 BUIS_MIN_BREEDTE = 15
 BUIS_KERN_DIKTE = 2
-
 # 4. KLEUREN
 KLEUR_VOGEL_LAAG = np.array([14, 50, 50])
 KLEUR_VOGEL_HOOG = np.array([34, 255, 255])
 KLEUR_BUIS_LAAG = np.array([40, 50, 50])
 KLEUR_BUIS_HOOG = np.array([60, 255, 255])
-
 # 5. NAVIGATIE
 GAP_SIZE = 140
 EXTRA_ZAKKEN = 14
-
 # 6. ACTIE
 MARGE_SPRONG = 0
 KLIK_TIJD = 0.02
 MIN_TIJD_TUSSEN_SPRONGEN = 0.05
 
-# ==============================================================================
-
-print("--- DE VLIEGENDE ROBOT (SCRIPT 5 - PURE FIX) ---")
-print("1. Verticale lijm dicht het gat van de score.")
-print("2. Wiskunde bugs bij enkele buizen opgelost.")
-print("Start: DIRECT")
 
 laatste_sprong_tijd = 0
 
-with mss.mss() as sct:
+with mss.MSS() as sct:
     while True:
         loop_start = time.time()
 
@@ -75,11 +63,8 @@ with mss.mss() as sct:
         kernel = np.ones((5, 5), np.uint8)
         mask_buis_dik = cv2.dilate(mask_buis, kernel, iterations=BUIS_KERN_DIKTE)
 
-        # --- DE ENIGE NIEUWE TOEVOEGING ---
-        # Verticale lijm: Metselt de buis weer aan elkaar als het score-cijfer hem doormidden hakt.
         kernel_lijm = np.ones((30, 5), np.uint8)
         mask_buis_dik = cv2.morphologyEx(mask_buis_dik, cv2.MORPH_CLOSE, kernel_lijm)
-        # ----------------------------------
 
         # 4. Vogel Opsporen
         vogel_x, vogel_y = 0, 0
@@ -149,14 +134,11 @@ with mss.mss() as sct:
             if onder_stukken:
                 y_vloer = min(b['y'] for b in onder_stukken)
 
-            # --- GAP WISKUNDE (Bugs opgelost) ---
             if boven_stukken and onder_stukken:
-                pass  # Alles is goed, we hebben vloer en plafond
+                pass
             elif boven_stukken and not onder_stukken:
-                # Gat is gewoon 140px (geen rare correcties meer)
                 y_vloer = y_plafond + GAP_SIZE
             elif onder_stukken and not boven_stukken:
-                # Gat is gewoon 140px (geen rare correcties meer)
                 y_plafond = y_vloer - GAP_SIZE
                 plafond_gevaar = 0
 
@@ -169,13 +151,13 @@ with mss.mss() as sct:
             cv2.rectangle(img, (kolom['start_x'], y_plafond), (kolom['start_x'] + kolom['max_w'], y_vloer),
                           (255, 0, 255), 2)
 
-            # Teken de 'Doodslijn' (Safety Line)
+            # Teken de Safety Line
             if plafond_gevaar > 0:
                 doodslijn = plafond_gevaar + VEILIGHEIDS_BUFFER
                 cv2.line(img, (kolom['start_x'], doodslijn), (kolom['start_x'] + kolom['max_w'], doodslijn),
                          (0, 0, 255), 2)
 
-            # --- ACTIE LOGICA ---
+            #  ACTIE LOGICA
             if not doel_gevonden and vogel_x > 0 and (kolom['start_x'] + kolom['max_w'] + 40 > vogel_x):
                 doel_gevonden = True
                 cv2.line(img, (vogel_x, vogel_y), (kolom['gemiddelde_x'], gat_midden), (200, 200, 0), 1)
@@ -193,7 +175,6 @@ with mss.mss() as sct:
                             is_veilig = False
 
                     if is_veilig:
-                        # SPRINGEN
                         nu = time.time()
                         if nu - laatste_sprong_tijd > MIN_TIJD_TUSSEN_SPRONGEN:
                             pyautogui.keyDown('space')
@@ -206,7 +187,6 @@ with mss.mss() as sct:
                             cv2.putText(img, "Wait", (vogel_x, vogel_y - 20), cv2.FONT_HERSHEY_SIMPLEX, 0.5,
                                         (0, 165, 255), 2)
                     else:
-                        # GEBLOKKEERD
                         cv2.putText(img, "BLOCKED!", (vogel_x, vogel_y - 20), cv2.FONT_HERSHEY_SIMPLEX, 0.8,
                                     (0, 0, 255), 2)
                         cv2.line(img, (vogel_x - 10, vogel_y - 10), (vogel_x + 10, vogel_y + 10), (0, 0, 255), 2)
@@ -215,7 +195,7 @@ with mss.mss() as sct:
                 else:
                     cv2.putText(img, "Zakken", (vogel_x, vogel_y - 20), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)
 
-        cv2.imshow('Robot Brein (Script 5 - PURE FIX)', img)
+        cv2.imshow('Robot Brein', img)
         if cv2.waitKey(1) & 0xFF == ord('q'):
             break
 
