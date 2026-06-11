@@ -2,7 +2,7 @@ import cv2
 import numpy as np
 
 # 1. LAAD HET PLAATJE
-img = cv2.imread('turffimg.jpeg')  # Zorg dat dit de goede naam is!
+img = cv2.imread('assets/turffimg.jpeg')  # Zorg dat dit de goede naam is!
 
 if img is None:
     print("Kan plaatje niet vinden!")

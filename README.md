@@ -55,7 +55,7 @@ De ontwikkeling volgt een iteratieve aanpak, startend bij softwarematige validat
 De GPIO-pinnen van de Raspberry Pi zijn niet ontworpen voor het leveren van hoge stromen. Het onderstaande circuit maakt gebruik van een externe voeding waarbij een NPN-transistor fungeert als low-side switch.
 
 ### Definitief Circuit
-![Definitief Schakelschema Breadboard](Circuit.png)
+![Definitief Schakelschema Breadboard](assets/Circuit.png)
 
 ### Bedradingsspecificaties
 * **Microcontroller Interface:**
@@ -79,7 +79,7 @@ De GPIO-pinnen van de Raspberry Pi zijn niet ontworpen voor het leveren van hoge
 De betrouwbaarheid van het algoritme is direct afhankelijk van de stabiliteit van de mechanische constructie.
 
 ### Overzicht Testopstelling
-![Totale Robot Opstelling boven iPad](setup.jpeg)
+![Totale Robot Opstelling boven iPad](assets/setup.jpeg)
 
 * **Camera Positionering:** De lens bevindt zich loodrecht boven het display. Externe lichtreflecties zijn geminimaliseerd om interferentie in de kleurdrempels (thresholding) te voorkomen.
 * **Actuator Kalibratie:** De solenoid is rigide gemonteerd. De afstand van de stylus-tip tot het capacitieve scherm is gekalibreerd op **1 millimeter** in ruststand. Dit minimaliseert de mechanische vertraging (actuation lag) tussen het GPIO-signaal en de fysieke aanraking.

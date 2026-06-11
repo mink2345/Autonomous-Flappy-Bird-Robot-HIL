@@ -1,7 +1,7 @@
 import cv2
 import numpy as np
 
-img = cv2.imread('flappy_test.jpg')  # Of je screenshot
+img = cv2.imread('../assets/flappy_test.jpg')  # Of je screenshot
 
 if img is None:
     print("Kan plaatje niet vinden!")
