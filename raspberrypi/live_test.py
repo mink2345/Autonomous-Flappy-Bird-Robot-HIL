@@ -3,23 +3,24 @@ import numpy as np
 import time
 from picamera2 import Picamera2
 
-# ==============================================================================
-# --- 1. AFMETINGEN (Iets verruimd naar links zodat de vogel erin valt!) ---
+#testing to see if everything is getting mapped while you plan te game, watch vlucht_logboek.avi to see if every thing is correct
+
+# --- 1. AFMETINGEN  ---
 SPEELVELD_TOP = 350
 SPEELVELD_BODEM = 880
-SPEELVELD_LINKS = 20  # Was 50, naar links gehaald voor de vogel
+SPEELVELD_LINKS = 20
 SPEELVELD_RECHTS = 1025
 
 MIDDEN_VELD = (SPEELVELD_TOP + SPEELVELD_BODEM) // 2
 
-# De koker waar de vogel in hangt (gebaseerd op je nieuwe screenshot!)
+# De koker waar de vogel in hangt
 VOGEL_SCAN_LINKS = 20
 VOGEL_SCAN_RECHTS = 140
 
 # --- 2. VASTE INSTELLINGEN ---
 SPRONG_KRACHT = 95
 VEILIGHEIDS_BUFFER = 22
-VOGEL_MIN_GROOTTE = 15  # Iets verlaagd voor motion blur
+VOGEL_MIN_GROOTTE = 15
 VOGEL_OFFSET_X = 50
 EXTRA_ZAKKEN = 20
 MARGE_SPRONG = 0
@@ -36,12 +37,10 @@ KLEUR_BUIS_HOOG1 = np.array([22, 255, 255])
 KLEUR_BUIS_LAAG2 = np.array([160, 70, 50])
 KLEUR_BUIS_HOOG2 = np.array([180, 255, 255])
 
-# ==============================================================================
 # --- VIDEO RECORDER SETUP ---
 fourcc = cv2.VideoWriter_fourcc(*'XVID')
 out = cv2.VideoWriter('vlucht_logboek.avi', fourcc, 20.0, (1080, 1440))
 
-# ==============================================================================
 # --- CAMERA SETUP ---
 print("Camera opstarten (Debug Mode 1440x1080)...")
 picam2 = Picamera2()
@@ -117,13 +116,12 @@ try:
             cv2.circle(img, (vogel_staart_x, vogel_y), 8, (0, 0, 255), -1)
             cv2.line(img, (vogel_staart_x, vogel_y), (vogel_neus_x, vogel_y), (255, 255, 255), 3)
 
-        # --- 4. BUIZEN DETECTIE (GEFIXT!) ---
+        # --- 4. BUIZEN DETECTIE  ---
         contours_buis, _ = cv2.findContours(mask_buis_dik, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
         ruwe_buizen = []
         for c in contours_buis:
             x, y, w, h = cv2.boundingRect(c)
             raakt_rand = (x + w) > (SPEELVELD_RECHTS - 15) or x < (SPEELVELD_LINKS + 15)
-            # Geen rare Y-voorwaarde meer: elke grote oranje blok in het veld telt!
             if cv2.contourArea(c) > 100 and (w > 30 or raakt_rand):
                 ruwe_buizen.append({'x': x, 'y': y, 'w': w, 'h': h, 'bottom': y + h, 'cx': x + w // 2})
 

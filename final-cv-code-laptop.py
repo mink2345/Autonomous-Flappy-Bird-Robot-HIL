@@ -4,9 +4,11 @@ import mss
 import pyautogui
 import time
 
+#scipt that plays flappy bird on laptop
+
 pyautogui.FAILSAFE = True
 
-
+#where on the screen were looking at
 MONITOR = {'top': 152, 'left': 118, 'width': 518, 'height': 696}
 # 1. PHYSICS & SAFETY
 SPRONG_KRACHT = 95

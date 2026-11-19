@@ -1,0 +1,44 @@
+{
+    "_uitleg_AFMETINGEN": "--- HET SPEELVELD ---",
+    "SPEELVELD_TOP": 350,
+
+    "_uitleg_SPEELVELD_BODEM": "Onderkant speelveld. GETAL VERHOGEN: Neemt meer van de onderkant mee in beeld. GETAL VERLAGEN: Snijdt de onderkant (bijv. de vloer) eerder af.",
+    "SPEELVELD_BODEM": 880,
+
+    "SPEELVELD_LINKS": 20,
+    "SPEELVELD_RECHTS": 1025,
+    "VOGEL_SCAN_LINKS": 20,
+    "VOGEL_SCAN_RECHTS": 140,
+    "VOGEL_MIN_GROOTTE": 15,
+    "GAP_SIZE": 140,
+
+    "_uitleg_ROBOT_LOGICA": "--- HET BREIN ---",
+
+    "_uitleg_VOGEL_OFFSET_X": "Hoe ver vooruit we de vogel simuleren. GETAL VERHOGEN: Robot kijkt verder in de toekomst. GETAL VERLAGEN: Vizier ligt dichter op de echte vogel.",
+    "VOGEL_OFFSET_X": 70,
+
+    "_uitleg_MARGE_SPRONG": "Startpunt van de sprong. GETAL VERLAGEN (meer negatief, bijv -50): Springt EERDER/HOGER boven het doel. GETAL VERHOGEN (richting 0): Springt LATER/LAGER.",
+    "MARGE_SPRONG": -70,
+
+    "_uitleg_EXTRA_ZAKKEN": "Correctie voor het exacte mikpunt. GETAL VERHOGEN: Robot mikt dieper/lager in de opening. GETAL VERLAGEN: Robot mikt hoger in de opening.",
+    "EXTRA_ZAKKEN": 20,
+
+    "_uitleg_SPRONG_KRACHT": "Voorspelling stijghoogte. GETAL VERHOGEN: Robot gaat ervan uit dat 1 tik de vogel hoog lanceert. GETAL VERLAGEN: Robot voorspelt een kleine stijging.",
+    "SPRONG_KRACHT": 95,
+
+    "_uitleg_VEILIGHEIDS_BUFFER": "Afstand tot plafond. GETAL VERHOGEN: Robot stopt met klikken als hij in de buurt van het plafond komt. GETAL VERLAGEN (naar 0): Robot neemt meer risico vlak onder het plafond.",
+    "VEILIGHEIDS_BUFFER": 22,
+
+    "_uitleg_BODEM_REDDING": "--- DE NOODREM VOOR DE VLOER ---",
+
+    "_uitleg_BODEM_REDDING_Y": "De Dodenlijn (Y-coördinaat). GETAL VERHOGEN: De lijn ligt lager, vogel mag dichter bij de vloer komen. GETAL VERLAGEN: De lijn ligt hoger, vogel wordt eerder gered. (Bodem is 880).",
+    "BODEM_REDDING_Y": 750,
+
+    "_uitleg_HARDWARE": "--- DE SOLENOID AANSTURING ---",
+
+    "_uitleg_KLIK_TIJD": "Stroomduur solenoid in seconden. GETAL VERHOGEN: Pin blijft langer tegen scherm gedrukt. GETAL VERLAGEN: Kortere, fellere tik.",
+    "KLIK_TIJD": 0.12,
+
+    "_uitleg_MIN_TIJD_TUSSEN_SPRONGEN": "De afkoelperiode. GETAL VERHOGEN: Robot wacht langer voordat hij weer mag tikken. GETAL VERLAGEN: Robot mag sneller achter elkaar doorklikken/spammen in paniek.",
+    "MIN_TIJD_TUSSEN_SPRONGEN": 0.08
+}

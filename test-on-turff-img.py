@@ -1,6 +1,7 @@
 import cv2
 import numpy as np
 
+#take the photo made with maak_foto.py and klik on the points so see the color and cords
 
 # Deze functie wordt uitgevoerd elke keer als je klikt
 def muis_klik(event, x, y, flags, param):

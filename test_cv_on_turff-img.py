@@ -1,7 +1,9 @@
 import cv2
 import numpy as np
 
-img = cv2.imread('assets/ipad_scherm_test.jpg')  # Zorg dat de naam klopt
+#see if mapping on the photo works
+
+img = cv2.imread('assets/ipad_scherm_test.jpg')
 if img is None:
     print("Kan plaatje niet vinden!")
     exit()
