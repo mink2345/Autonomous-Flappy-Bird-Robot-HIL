@@ -4,7 +4,7 @@ An autonomous Raspberry Pi robot that plays **Turff Flappy** on an upright iPad 
 
 <!-- PLACEHOLDER: Replace with your best short demo GIF or MP4 once you have a clean run -->
 ![Demo of the autonomous Flappy Bird robot in action](assets/demo_phone_pov.mp4)
-![Demo of the autonomous Flappy Bird robot in action](assets/laptop_realtime_demo.png)
+![Demo of the autonomous Flappy Bird robot in action](assets/flappyvid.mp4)
 
 
 ## The Motivation

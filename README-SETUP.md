@@ -6,16 +6,17 @@ This guide covers the hardware components, circuit wiring, mechanical assembly, 
 
 ## 1. Bill of Materials (BOM)
 
-| Component | Specification | Purpose |
-| :--- | :--- | :--- |
-| **Microcontroller** | Raspberry Pi 4B | Runs OpenCV vision loop & GPIO control |
-| **Camera** | Raspberry Pi Camera Module 3 (CSI) | Captures the iPad screen |
-| **Actuator** | JF-0530B Push-Pull Solenoid (6V, 300mA) | Physically taps the touchscreen |
-| **Transistor** | 1x TIP120 Darlington NPN | Low-side switch for the solenoid |
-| **Diode** | 1x 1N4007 Flyback Diode | Protects the circuit from inductive voltage spikes |
-| **Resistors** | 2x 1kΩ | GPIO base current limiting & pull-down |
-| **Power Supply** | External 5V/6V DC rail | Powers the 300mA solenoid independently of Pi GPIO |
-| **Capacitive Tip** | Conductive stylus tip + GND wire | Registers taps on a capacitive iPad screen |
+| Component | Specification                           | Purpose                                            |
+| :--- |:----------------------------------------|:---------------------------------------------------|
+| **Microcontroller** | Raspberry Pi 4B                         | Runs OpenCV vision loop & GPIO control             |
+| **Camera** | Raspberry Pi Camera Module 3 (CSI)      | Captures the iPad screen                           |
+| **Actuator** | JF-0530B Push-Pull Solenoid (6V, 300mA) | Physically taps the touchscreen                    |
+| **Transistor** | 1x TIP120 Darlington NPN                | Low-side switch for the solenoid                   |
+| **Diode** | 1x 1N4007 Flyback Diode                 | Protects the circuit from inductive voltage spikes |
+| **Resistors** | 2x 1kΩ                                  | GPIO base current limiting & pull-down             |
+| **Power Supply** | External 5V/6V DC rail                  | Powers the 300mA solenoid independently of Pi GPIO |
+| **Capacitive Tip** | Conductive stylus tip + GND wire        | Registers taps on a capacitive iPad screen         |
+| **Frame / Mount** | LEGO and Tape                           | To build the frame to set everything in position   |
 
 
 ---
