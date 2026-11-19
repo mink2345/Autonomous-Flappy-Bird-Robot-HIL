@@ -7,6 +7,10 @@ An autonomous Raspberry Pi robot that plays **Turff Flappy** on an upright iPad 
 ![Demo of the autonomous Flappy Bird robot in action](assets/flappyvid.mp4)
 
 
+https://github.com/user-attachments/assets/34876749-0c50-48d6-b0c4-58ebbfad55ad
+
+
+
 ## The Motivation
 In our student house, we have a wall-mounted tablet running a custom Flappy Bird game (*Turff Flappy*). The monthly high-score winner gets a crates of beer. Instead of spending hours practicing tapping a screen, I decided to engineer a robot to beat it for me, no API, no jailbreak, just a camera and a mechanical finger.
 
