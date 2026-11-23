@@ -4,7 +4,6 @@ An autonomous Raspberry Pi robot that plays **Turff Flappy** on an upright iPad 
 
 <!-- PLACEHOLDER: Replace with your best short demo GIF or MP4 once you have a clean run -->
 ![Demo of the autonomous Flappy Bird robot in action](assets/demo_phone_pov.mp4)
-![Demo of the autonomous Flappy Bird robot in action](assets/flappyvid.mp4)
 
 
 https://github.com/user-attachments/assets/34876749-0c50-48d6-b0c4-58ebbfad55ad
@@ -27,5 +26,5 @@ In our student house, we have a wall-mounted tablet running a custom Flappy Bird
 - [ ] **In Progress:** Overcoming the ~150–200 ms physical Hardware-in-the-Loop (HIL) latency via an automated calibration script (`kalibratie_variabelen.py`) to measure exact jump height, fall speed, and actuator delay.
 
 ## Documentation
-* **[Development Log (`README-DEV.md`)](README-DEVLOG.md)** — The full engineering story, design decisions, hardware hacks, and why I dropped Machine Learning.
+* **[Development Log (`README-DEVLOG.md`)](README-DEVLOG.md)** — The full engineering story, design decisions, hardware hacks, and why I dropped Machine Learning.
 * **[Build & Setup Guide (`SETUP.md`)](SETUP.md)** — Bill of Materials (BOM), wiring schematic, mechanical setup, and how to run the code yourself.
